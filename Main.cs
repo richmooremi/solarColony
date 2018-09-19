@@ -124,7 +124,7 @@ public class Main : MonoBehaviour
     public GameObject planetDetails;
 
     //variables related to probe tech level
-    public int explorerLevel = 0;
+    private int techLevel = 0;
 
     //public Vector2 minerTempRange = new Vector2(-5, -1);
 
@@ -1822,6 +1822,21 @@ public class Main : MonoBehaviour
         else return null;
     }
 
+    public void setTechLevel(int i)
+    {
+        this.techLevel = i;
+    }
+
+    public int getTechLevel()
+    {
+        return techLevel;
+    }
+
+    public void sendMiniMessage(string s)
+    {
+        StartCoroutine(displayMiniMessage(s));
+    }
+
     private void SetResources()
     {
         //this method is called in Main.Start() and is used to 
@@ -1900,11 +1915,6 @@ public class Main : MonoBehaviour
         sulfurGoalText.text = "Sulfur: " + goals[1];
         moneyGoalText.text = "Money: " + goals[2];
         hydrogenGoalText.text = "Hydrogen: " + goals[3];
-    }
-
-    public void increaseTechLevel()
-    {
-        explorerLevel++;
     }
     #endregion
 
