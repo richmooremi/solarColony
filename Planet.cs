@@ -22,17 +22,6 @@ public class Planet : MonoBehaviour {
     //the high and low temperatures of the planet (not fully implemented)
     public Vector2 tempRange = new Vector2(0, 0);
 
-    //mining locations (depricated)
-    public List<GameObject> mineTargets = new List<GameObject>();
-    public int miningIndex =  0;
-
-    //syphon locations (depricated)
-    public List<GameObject> syphonTargets = new List<GameObject>();
-    public int syphonIndex = 0;
-
-    //explorer target (depricated)
-    public Transform exploreTarget;
-
     public bool explored = false;       //true when planet has been explored by the player
     public bool canMine, canSyphon;     //true when the planet can be mined or syphoned
 
@@ -66,24 +55,6 @@ public class Planet : MonoBehaviour {
         //get all of the children in this planet and create list of mine targets
         Transform[] getChildren = this.GetComponentsInChildren<Transform>();
 
-        //for every child that is a mine target, add it to the list
-        foreach (Transform t in getChildren)
-        {
-            if (t.gameObject.tag == "MineTarget")
-            {
-                mineTargets.Add(t.gameObject);
-            }
-
-            else if (t.gameObject.tag == "ExploreTarget")
-            {
-                exploreTarget = t;
-            }
-
-            else if (t.gameObject.tag == "SyphonTarget")
-            {
-                syphonTargets.Add(t.gameObject);
-            }
-        }
     }
 
 	void FixedUpdate()

@@ -10,6 +10,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Intro : MonoBehaviour {
 
@@ -18,6 +19,15 @@ public class Intro : MonoBehaviour {
     public Text placeHolderText;                //the placeholder text of the input box, uded to set the previous value on reload
     public Slider difficultySlider;             //the difficult slider, used to set the previous value on reload
 
+    //error messages that appear on the screen if the player
+    //triest to start the game without selecting a name or avatar
+    private GameObject nameError;
+    private GameObject avatarError;
+
+    //gameobjects identifying the currently and previous avatar
+    public GameObject previouslySlecetedAvatar;
+    public GameObject currentlySelectedAvatar;
+
     private void Awake()
     {
         //find the PlayerStats object
@@ -25,6 +35,9 @@ public class Intro : MonoBehaviour {
 
         //populate buttons array with all buttons on the screen
         buttons = FindObjectsOfType<Button>();
+
+        avatarError = GameObject.Find("AvatarError");
+        nameError = GameObject.Find("NameError");
 
         //if the player has seen the intro screen before, load stats from the manager
         if (!stats.firstPlay)
@@ -49,6 +62,13 @@ public class Intro : MonoBehaviour {
         stats.playerDifficulty = (int)difficultySlider.value;
     }
 
+    private void Start()
+    {
+        //make sure error messages are hidden
+        nameError.GetComponent<Text>().enabled = false;
+        avatarError.GetComponent<Text>().enabled = false;
+    }
+
     #region sets
     public void SetName(string name)
     {
@@ -64,27 +84,50 @@ public class Intro : MonoBehaviour {
 
     public void SetAvatar()
     {
-        //change all avatar buttons back to 100% alpha
-        foreach (Button b in buttons)
-        {
-            if (b.name.Contains("avatar"))
-            {
-                b.image.color = new Color(255, 255, 255, 1f);
-            }
-        }
-
         //sets player avatar to selected avatar
         stats.playerAvatar = EventSystem.current.currentSelectedGameObject.GetComponent<Button>().image.sprite;
 
-        //set currently selected avatar image to 50% alpha
-        EventSystem.current.currentSelectedGameObject.GetComponent<Button>().image.color = new Color(255, 255, 255, 0.5f);
+        //swap the currently and previously selected avatars
+        previouslySlecetedAvatar = currentlySelectedAvatar;
+        currentlySelectedAvatar = EventSystem.current.currentSelectedGameObject;
+
+        //change the alpha of the previous avatar to 100% and the current one to 50%
+        if (previouslySlecetedAvatar != null)
+            previouslySlecetedAvatar.GetComponent<Button>().image.color = new Color(255, 255, 255, 1f);
+        currentlySelectedAvatar.GetComponent<Button>().image.color = new Color(255, 255, 255, 0.5f);
+
     }
     #endregion
 
+    public bool isReady()
+    {
+        if (stats.playerName != "" && stats.playerAvatar != null)
+            return true;
+
+        return false;
+    }
+
     public void onClicked()
     {
+        avatarError.GetComponent<Text>().enabled = false;
+        nameError.GetComponent<Text>().enabled = false;
+
         //load the first map
-        Application.LoadLevel(1);
+        if (isReady())
+        {
+            SceneManager.UnloadSceneAsync(0);
+            SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+            
+        }
+
+        else
+        {
+            if (stats.playerAvatar == null)
+                avatarError.GetComponent<Text>().enabled = true;
+
+            if (stats.playerName == "")
+                nameError.GetComponent<Text>().enabled = true;
+        }
     }
 
     public void Quit()
