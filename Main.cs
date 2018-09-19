@@ -123,6 +123,9 @@ public class Main : MonoBehaviour
     public AdvisorPanel advisorPanel;
     public GameObject planetDetails;
 
+    //variables related to probe tech level
+    public int explorerLevel = 0;
+
     //public Vector2 minerTempRange = new Vector2(-5, -1);
 
     #endregion
@@ -1897,6 +1900,11 @@ public class Main : MonoBehaviour
         sulfurGoalText.text = "Sulfur: " + goals[1];
         moneyGoalText.text = "Money: " + goals[2];
         hydrogenGoalText.text = "Hydrogen: " + goals[3];
+    }
+
+    public void increaseTechLevel()
+    {
+        explorerLevel++;
     }
     #endregion
 
