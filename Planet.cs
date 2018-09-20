@@ -17,7 +17,10 @@ public class Planet : MonoBehaviour {
     public float rotationSpeed;
 
     //resources contained by the planet, used with Main.resourceNames[]  
-    public int[] resources = new int[4];
+    public int[] resources = new int[7];
+
+    //the top 4 elements that this planet has, used in the PlanetPanel
+    public int[] topFourResources = new int[4];
 
     //the high and low temperatures of the planet (not fully implemented)
     public Vector2 tempRange = new Vector2(0, 0);
@@ -44,7 +47,10 @@ public class Planet : MonoBehaviour {
         sun = GameObject.Find("Sun");
 
         SetTargets();
-	}
+
+        calculateTopFourResources();
+
+    }
 	
     void SetTargets()
     {
@@ -86,6 +92,31 @@ public class Planet : MonoBehaviour {
 
         //rotate planet around axis
         this.transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime * -1);                              //rotate planet CCW around axis
+    }
+
+    private void calculateTopFourResources()
+    {
+        //initialize array to -1
+        for (int i = 0; i < 4; i++)
+            topFourResources[i] = -1;
+        
+        //create new sorted list
+        SortedList<int, int> list = new SortedList<int, int>();
+
+        //add non-zero values to list
+        for (int i = 0; i < resources.Length; i++)
+        {
+            if (resources[i] != 0)
+                list.Add(resources[i], i);
+        }
+
+        //iterate backward through the list, but forward through the array
+        int j = 0;
+        for (int i = list.Count - 1; i > list.Count -5; i--)
+        {
+            topFourResources[j] = list.Values[i];
+            j++;
+        }
     }
 
     public void updateActions()

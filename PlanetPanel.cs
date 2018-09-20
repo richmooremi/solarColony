@@ -30,6 +30,12 @@ public class PlanetPanel : MonoBehaviour {
 
 
 
+    public Sprite[] allResourceImages = new Sprite[36];
+    public Text[] resourceText = new Text[4];
+    public Image[] resourceImages = new Image[4];
+
+
+
     #endregion
 
     void Awake ()
@@ -55,11 +61,24 @@ public class PlanetPanel : MonoBehaviour {
             lowTemp.text = Main.getCurrentPlanet().tempRange.x.ToString() + "°C";
             highTemp.text = Main.getCurrentPlanet().tempRange.y.ToString() + "°C";
 
-            ironText.text = Main.getCurrentPlanet().resources[0].ToString();
-            sulfurText.text = Main.getCurrentPlanet().resources[1].ToString();
-            hydrogenText.text = Main.getCurrentPlanet().resources[3].ToString();
+            //auto generates grid of up to 4 most abundent elements
+            for (int i = 0; i < 4; i++)
+            {
+                if (Main.getCurrentPlanet().topFourResources[i] == -1)
+                {
+                    resourceImages[i].GetComponent<Image>().color = new Vector4(0,0,0,0);
+                    resourceText[i].text = "";
+                }
 
-            navPanel.setMoonPanel(Main.getCurrentPlanet().hasMoons);
+                else
+                {
+                    
+                    int r = Main.getCurrentPlanet().topFourResources[i];
+                    Debug.Log("planet " + Main.resourceName[r]);
+                    resourceImages[i].sprite = allResourceImages[r];
+                    resourceText[i].text = Main.getCurrentPlanet().resources[r].ToString();
+                }
+            }
         }
     }
 
