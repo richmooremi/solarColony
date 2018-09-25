@@ -13,7 +13,7 @@ public class Miner : Craft {
 
     //resources contained by the craft used with Main.resourceNames[]  
     public int[] resources = new int[2];
-    private int targetResource;
+    public int targetResource;
 
     //statistics of the miner craft
     private int capacity = 5;                       //carrying capacity of the craft
@@ -43,7 +43,7 @@ public class Miner : Craft {
         }
     }
     
-    void SetResource(int resource)
+    public void SetResource(int resource)
     {
         //this method is called when craft is created
         //and sets target resource

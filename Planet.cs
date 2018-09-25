@@ -21,6 +21,7 @@ public class Planet : MonoBehaviour {
 
     //the top 4 elements that this planet has, used in the PlanetPanel
     public int[] topFourResources = new int[4];
+    public int numberOfResources;
 
     //the high and low temperatures of the planet (not fully implemented)
     public Vector2 tempRange = new Vector2(0, 0);
@@ -112,11 +113,15 @@ public class Planet : MonoBehaviour {
 
         //iterate backward through the list, but forward through the array
         int j = 0;
-        for (int i = list.Count - 1; i > list.Count -5; i--)
+        for (int i = list.Count -1; i >= 0; i--)
         {
-            topFourResources[j] = list.Values[i];
+            topFourResources[j] =  list.Values[i];
             j++;
         }
+
+        numberOfResources = list.Count;
+        Debug.Log(this.name + " " + numberOfResources + " " + list.Count);
+        
     }
 
     public void updateActions()

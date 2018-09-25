@@ -13,7 +13,7 @@ public class Syphoner : Craft {
 
     //resources contained by the craft used with Main.resourceNames[]  
     public int[] resources = new int[4];
-    private int targetResource = 3;
+    public int targetResource = 3;
 
     //statistics of the miner craft
     private int capacity = 5;                       //carrying capacity of the craft

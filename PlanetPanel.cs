@@ -74,7 +74,7 @@ public class PlanetPanel : MonoBehaviour {
                 {
                     
                     int r = Main.getCurrentPlanet().topFourResources[i];
-                    Debug.Log("planet " + Main.resourceName[r]);
+                    //Debug.Log("planet " + Main.resourceName[r]);
                     resourceImages[i].sprite = allResourceImages[r];
                     resourceText[i].text = Main.getCurrentPlanet().resources[r].ToString();
                 }

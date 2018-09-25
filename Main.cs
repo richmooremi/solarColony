@@ -74,6 +74,12 @@ public class Main : MonoBehaviour
     public GameObject buttonCasino;
     public GameObject buttonStudio;
     public GameObject buttonFactory;
+    public GameObject buttonHydrogen;
+    public GameObject buttonSulfur;
+    public GameObject buttonIron;
+
+    int targetResource;
+
 
     private string clickMode = "normal";        //normal, explore, mine, syphon, casino, factory, studio
 
@@ -94,7 +100,9 @@ public class Main : MonoBehaviour
     GameObject target;
 
     //variables for keeping player stats
-    public static string[] resourceName = { "iron", "sulfur", "money", "hydrogen" };    //names of the resources by index
+    public static string[] resourceName = { "iron", "sulfur", "money", "hydrogen", "null", "null",
+                                             "null", "null", "null", "null",
+                                             "null", "null"};    //names of the resources by index
     public static int[] playerResources = { 0, 0 , 0, 0 };                              //resources in the player's posession
     public static int[] marketResources = { 0, 0, 0, 0 };                               //resources in the marketplace (not implemented)
 
@@ -647,7 +655,7 @@ public class Main : MonoBehaviour
         DrawMenu();
     }
 
-    private void DrawSubMenu(Transform target)
+    private void DrawSubMenu(Transform target, string btn)
     {
         //this method is called when the build button is clicked and creates
         //a circular menu originating from the center of the button
@@ -668,10 +676,38 @@ public class Main : MonoBehaviour
             subMenuItems = null;
 
         //get number of submenu items (can use a list for dynamic menus)
-        int numSubItems = 3;
+        int numSubItems = 0;
 
         //assign buttons to submenu items
-        string[] availableSubItems = { "Casino", "Studio", "Factory" };
+        string[] availableSubItems = null;
+
+        if (btn == "build")
+        {
+            numSubItems = 3;
+            availableSubItems = new string[numSubItems];
+            availableSubItems[0] = "Casino";
+            availableSubItems[1] = "Studio";
+            availableSubItems[2] = "Factory";
+        }
+
+        if (btn == "mine")
+        {
+            numSubItems = currentPlanet.GetComponent<Planet>().numberOfResources;
+
+            if (numSubItems >= 4)
+                numSubItems = 4;
+
+            Debug.Log("Draw Menu Called " + numSubItems);
+
+            availableSubItems = new string[numSubItems];
+
+
+            for (int i = 0; i < numSubItems; i++)
+            {
+                Debug.Log(i + " element: " + resourceName[currentPlanet.GetComponent<Planet>().topFourResources[i]]);
+                availableSubItems[i] = resourceName[currentPlanet.GetComponent<Planet>().topFourResources[i]];
+            }
+        }
 
         //get items to display
         subMenuItems = new GameObject[numSubItems];
@@ -730,6 +766,13 @@ public class Main : MonoBehaviour
                 return buttonFactory;
             case "Studio":
                 return buttonStudio;
+
+            case "hydrogen":
+                return buttonHydrogen;
+            case "iron":
+                return buttonIron;
+            case "sulfur":
+                return buttonSulfur;
         }
 
         return null;
@@ -888,6 +931,7 @@ public class Main : MonoBehaviour
                 toolTip.setCosts(factoryPrefab.GetComponent<Craft>().cost[2], Mathf.FloorToInt(Vector3.Distance(manufactureTarget.transform.position, getCurrentPlanet().transform.position) * 5), factoryPrefab.GetComponent<Craft>().cost[0]);
                 toolTip.setStatus(true);
             }
+
         }
 
         //if in any building mode and pointing at object
@@ -1116,6 +1160,10 @@ public class Main : MonoBehaviour
                     }
                 }
 
+                DrawSubMenu(target.transform, "mine");
+                return;
+
+                /*
                 if (readyToMine())
                 {
                     //remove orbit sphere is there was one
@@ -1139,6 +1187,7 @@ public class Main : MonoBehaviour
                     clickMode = "mine";
                     return;
                 }
+                */
             }
 
             //if explore button is clicked
@@ -1313,7 +1362,7 @@ public class Main : MonoBehaviour
                 }
 
                 //draw the submenu
-                DrawSubMenu(target.transform);
+                DrawSubMenu(target.transform, "build");
                 return;
             }
 
@@ -1342,6 +1391,117 @@ public class Main : MonoBehaviour
                     sphere.transform.SetParent(getCurrentPlanet().transform);
                     sphere.name = "OrbitSphere";
                     clickMode = "casino";
+                }
+            }
+
+            //if iron button is clicked
+            if (target.name.Contains("ButtonIron"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 0;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "mine";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "mine";
+                    return;
+                }
+            }
+
+            //if iron button is clicked
+            if (target.name.Contains("ButtonSulfur"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 1;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
+                }
+            }
+
+            //if iron button is clicked
+            if (target.name.Contains("ButtonHydrogen"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 3;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
                 }
             }
 
@@ -1487,6 +1647,7 @@ public class Main : MonoBehaviour
         Miner m = c.GetComponent<Miner>();
         m.target = newTarget;
         m.transform.localScale = new Vector3(.005f, .005f, .005f);
+        m.targetResource = targetResource;
 
         //deduct resources
         playerResources[2] -= minerMoney;
@@ -1519,6 +1680,7 @@ public class Main : MonoBehaviour
         Syphoner s = c.GetComponent<Syphoner>();
         s.target = newTarget;
         s.transform.localScale = new Vector3(.01f, .01f, .01f);
+        s.targetResource = targetResource;
 
         //deduct resources
         playerResources[2] -= syphonerMoneyCost;
