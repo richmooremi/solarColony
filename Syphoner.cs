@@ -47,21 +47,34 @@ public class Syphoner : Craft {
 
     IEnumerator Syphon(float waitTime)
     {
+        if (targetPlanet.resources[targetResource] == 0)
+        {
+            this.resources[targetResource] = 0;
+            Main.playerResources[targetResource] += this.capacity;
+            planetpanel.updateResources();
+            inUse = false;
+        }
+
         //THIS METHOD CONTROLS MINING OF RESOUCES FROM PLANETS
         //PLANET -> CRAFT -> PLAYER
 
-        while (targetPlanet.resources[targetResource] > 0)
+        while (targetPlanet.resources[targetResource] > 0 && inUse)
         {
             //if the craft has no remaining capacity, transfer to player
             if (this.resources[targetResource] - this.capacity == 0)
             {
                 this.resources[targetResource] = 0;
                 Main.playerResources[targetResource] += this.capacity;
+                planetpanel.updateResources();
             }
 
             //if the planet has available resources, transfer to craft
             targetPlanet.resources[targetResource]--;
             this.resources[targetResource]++;
+
+            //if the last of this resource has been mined
+            if (targetPlanet.resources[targetResource] == 0)
+                planetpanel.updateResources();
 
             yield return new WaitForSeconds(waitTime);
         }

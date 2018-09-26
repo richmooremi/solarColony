@@ -23,7 +23,7 @@ public class TechPanel : MonoBehaviour {
         if (!extended)
         {
             panelButton.transform.localEulerAngles = new Vector3(0, 0, 180);
-            this.GetComponent<RectTransform>().anchoredPosition = new Vector2(51.10001f, 107.4f);
+            this.GetComponent<RectTransform>().anchoredPosition = new Vector2(80.9f, 107.7f);
             extended = true;
         }
 
@@ -31,7 +31,7 @@ public class TechPanel : MonoBehaviour {
         else
         {
             panelButton.transform.localEulerAngles = new Vector3(0, 0, 0);
-            this.GetComponent<RectTransform>().anchoredPosition = new Vector2(51.10001f, 133.8f);
+            this.GetComponent<RectTransform>().anchoredPosition = new Vector2(80.9f, 131f);
             extended = false;
         }
 

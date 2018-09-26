@@ -28,11 +28,22 @@ public class Craft : MonoBehaviour {
     //passed in when the craft is created
     public int distance;
 
+    //reference to the planet panel
+    protected PlanetPanel planetpanel;
+
+    //determines whether the craft is currently in use
+    protected bool inUse = true;
+
     protected void Start ()
     {
 
         //get the planet that was selected when this craft was instantiated
         targetPlanet = Main.getCurrentPlanet();
+
+        planetpanel = GameObject.FindObjectOfType<PlanetPanel>();
+
+        //craft are in use by default
+        inUse = true;
 
     }
 

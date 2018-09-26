@@ -82,6 +82,18 @@ public class PlanetPanel : MonoBehaviour {
         }
     }
 
+    public void updateResources()
+    {
+        for (int i = 0; i < 4; i++)
+        { 
+            if(Main.getCurrentPlanet().topFourResources[i] == -1)
+                resourceText[i].text = "";
+
+            else
+                resourceText[i].text = Main.getCurrentPlanet().resources[Main.getCurrentPlanet().topFourResources[i]].ToString();
+        }
+    }
+
     public void movePanel()
     {
         //this method is used to collapse and expand the planet panel
