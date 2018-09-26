@@ -266,6 +266,7 @@ public class Main : MonoBehaviour
 
         //update resource text
         SetResourceText();
+        
     }
 
     private void AlignPlanets()

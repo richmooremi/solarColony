@@ -56,22 +56,39 @@ public class Miner : Craft {
         //THIS METHOD CONTROLS MINING OF RESOUCES FROM PLANETS
         //PLANET -> CRAFT -> PLAYER
 
+        if (targetPlanet.resources[targetResource] == 0)
+        {
+            this.resources[targetResource] = 0;
+            Main.playerResources[targetResource] += this.capacity;
+            planetpanel.updateResources();
+            inUse = false;
+        }
+
+       // else if (targetPlanet.resources[targetResource] < 5)
+       //     planetpanel.updateResources();
+
         //while the target planet still has iron
-        while (targetPlanet.resources[targetResource] > 0)
+        while (targetPlanet.resources[targetResource] > 0 && inUse)
         {
             //if the craft has no remaining capacity, transfer to player
             if (this.resources[targetResource] - this.capacity == 0)
             {
                 this.resources[targetResource] = 0;
                 Main.playerResources[targetResource] += this.capacity;
+                planetpanel.updateResources();
             }
-                         //if the planet has available resources, transfer to craft
+
+            //if the planet has available resources, transfer to craft
             targetPlanet.resources[targetResource]--;
             this.resources[targetResource]++;
 
             yield return new WaitForSeconds(waitTime);
         }
-        
+
+        //if the last of this resouce has been mined
+        if (targetPlanet.resources[targetResource] == 0)
+            planetpanel.updateResources();
+
         //transfer all resources from this craft to the player    
         Main.playerResources[targetResource] += this.resources[targetResource];
         this.resources[targetResource] = 0;      
