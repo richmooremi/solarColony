@@ -94,9 +94,9 @@ public class Main : MonoBehaviour
     GameObject target;
 
     //variables for keeping player stats
-    public static string[] resourceName = { "iron", "sulfur", "money", "hydrogen" };    //names of the resources by index
-    public static int[] playerResources = { 0, 0 , 0, 0 };                              //resources in the player's posession
-    public static int[] marketResources = { 0, 0, 0, 0 };                               //resources in the marketplace (not implemented)
+    public static string[] resourceName = { "iron", "sulfur", "money", "hydrogen", "oxygen", "sodium", "helium", "carbon dioxide", "water", "nitrogen", "silicon", "aluminum", "magnesium", "potassium", "argon", "methane" };    //names of the resources by index
+    public static int[] playerResources = { 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };                              //resources in the player's posession
+    //public static int[] marketResources = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };                               //resources in the marketplace (no longner implemented in Main)
 
     //array to hold player goals
     public static int[] goals;          //the goals the player must reach set in SetGoals()
@@ -730,6 +730,11 @@ public class Main : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void sendMiniMessage(string s)
+    {
+        StartCoroutine(displayMiniMessage(s));
     }
 
     public IEnumerator displayMiniMessage(string msg)

@@ -12,7 +12,8 @@ using System.Collections;
 public class Miner : Craft {
 
     //resources contained by the craft used with Main.resourceNames[]  
-    public int[] resources = new int[2];
+    //to be used to craft with larger capacities that can mine more than one element
+    public int[] resources = new int[16];
     private int targetResource;
 
     //statistics of the miner craft

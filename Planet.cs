@@ -17,7 +17,7 @@ public class Planet : MonoBehaviour {
     public float rotationSpeed;
 
     //resources contained by the planet, used with Main.resourceNames[]  
-    public int[] resources = new int[4];
+    public int[] resources = new int[16];
 
     //the high and low temperatures of the planet (not fully implemented)
     public Vector2 tempRange = new Vector2(0, 0);
@@ -124,7 +124,9 @@ public class Planet : MonoBehaviour {
 
         if (explored)
         {
-            if(canMine)
+            availableActions.Remove("Explore");
+
+            if (canMine)
                 availableActions.Add("Mine");
 
             if (canSyphon)
