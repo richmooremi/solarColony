@@ -114,11 +114,21 @@ public class Planet : MonoBehaviour {
 
         //iterate backward through the list, but forward through the array
         int j = 0;
-        for (int i = list.Count -1; i >= 0; i--)
-        {
-            topFourResources[j] =  list.Values[i];
-            j++;
-        }
+
+        if (list.Count <= 4)
+            for (int i = list.Count -1 ; i >= 0; i--)
+            {
+                topFourResources[j] =  list.Values[i];
+                j++;
+            }
+
+        else
+            for (int i = list.Count - 1; i >= list.Count - 4; i--)
+            {
+                topFourResources[j] = list.Values[i];
+                j++;
+            }
+
 
         numberOfResources = list.Count;
         Debug.Log(this.name + " " + numberOfResources + " " + list.Count);

@@ -660,6 +660,8 @@ public class Main : MonoBehaviour
         //this method is called when the build button is clicked and creates
         //a circular menu originating from the center of the button
 
+        Debug.Log("Drawing submenu with button " + btn);
+
         //close the submenu and return if it is already open
         if (subMenuOpen)
         {
@@ -1165,6 +1167,7 @@ public class Main : MonoBehaviour
                     }
                 }
 
+                
                 DrawSubMenu(target.transform, "mine");
                 return;
 
