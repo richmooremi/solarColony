@@ -114,6 +114,22 @@ public class ToolTip : MonoBehaviour {
         messages.Add("Factory",                     "An inexpensive manufacturing facility which provides a slow, but steady income.");
         messages.Add("Resort",                      "A resort will attract many clients when first built, but income will taper off with age.");
         messages.Add("Movie\nStudio",               "A studio will provide to be a good, but somewhat unpredictable source of income.");
+        messages.Add("Iron",                        "Iron is the primary ingredient in steel and is the backbone of modern construction.");
+        messages.Add("Sulfur",                      "Sulfur is a prime component in sulfuric acid which is used in many industrial processes.");
+        messages.Add("Hydrogen",                    "Hydrogen can be used as a fuel or in the synthesis of many important compounds like water.");
+        messages.Add("Oxygen",                      "Oxygen is the most important element in human respiration, but can be used to make other compounds.");
+        messages.Add("Sodium",                      "Sodium is an important electrolyte and can also be used in the preservation of foods.");
+        messages.Add("Helium",                      "Helium is much more stable than hydrogen and can be used for safely pressurizing containers.");
+        messages.Add("Carbon\nDioxide",             "Carbon dioxide can be broken into carbon and oxygen. The carbon can be used to build structures.");
+        messages.Add("Water",                       "Water is the most important molecule to life and can also be used as a universal solvent.");
+        messages.Add("Nitrogen",                    "Nitrogen can be used to create organic fertilizers or volitile explosives.");
+        messages.Add("Silicon",                     "Silicon is an important component in the integrated circuits used in our electronics.");
+        messages.Add("Aluminum",                    "Aluminum can be used to create metal alloys that are both incredibly strong and lightweight.");
+        messages.Add("Magnesium",                   "Magnesium is an important nutrient and can also be used in the manufacturing of plastics.");
+        messages.Add("Potassium",                   "Potassium is an important nutrient and can also aid in the production of glass.");
+        messages.Add("Argon",                       "This noble gas is inert, making it great for heat dissipation and pressurization.");
+        messages.Add("Methane",                     "Methane is a volitile waste product of biological processes. It can be used as fuel.");
+
 
     }
 }

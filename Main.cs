@@ -81,6 +81,7 @@ public class Main : MonoBehaviour
 
 
     int targetResource;
+    public ResourcePanel resourcePanel;
 
 
     private string clickMode = "normal";        //normal, explore, mine, syphon, casino, factory, studio
@@ -142,6 +143,8 @@ public class Main : MonoBehaviour
     #region start and update
     void Start()
     {
+        resourcePanel = GameObject.FindObjectOfType<ResourcePanel>();
+
         //initialize exploredPlanets list
         exploredPlanets = new List<string>();
 
@@ -882,7 +885,8 @@ public class Main : MonoBehaviour
                 toolTip.setFollow(false);
             }
 
-            //mine button
+                
+           //mine button
             if (target.name.Contains("ButtonMine"))
             {   
                 //start the button tooltip, including the cost panel
@@ -962,6 +966,158 @@ public class Main : MonoBehaviour
                 toolTip.SendMessage("setMessage", "Factory");
                 toolTip.costPanel.SetActive(true);
                 toolTip.setCosts(factoryPrefab.GetComponent<Craft>().cost[2], Mathf.FloorToInt(Vector3.Distance(manufactureTarget.transform.position, getCurrentPlanet().transform.position) * 5), factoryPrefab.GetComponent<Craft>().cost[0]);
+                toolTip.setStatus(true);
+            }
+
+            //ELEMENTS START HERE
+
+            //iron button
+            if (target.name.Contains("ButtonIron"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Iron");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //sulfur button
+            if (target.name.Contains("ButtonSulfur"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Sulfur");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //hydrogen button
+            if (target.name.Contains("ButtonHydrogen"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Hydrogen");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //oxygen button
+            if (target.name.Contains("ButtonOxygen"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Oxygen");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //sodium button
+            if (target.name.Contains("ButtonSodium"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Sodium");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //helium button
+            if (target.name.Contains("ButtonHelium"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Helium");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //carbon dioxide button
+            if (target.name.Contains("ButtonCarbonDioxide"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Carbon\nDioxide");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //water button
+            if (target.name.Contains("ButtonWater"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Water");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //nitrogen button
+            if (target.name.Contains("ButtonNitrogen"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Nitrogen");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //silicon button
+            if (target.name.Contains("ButtonSilicon"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Silicon");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //aluminum button
+            if (target.name.Contains("ButtonAluminum"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Aluminum");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //magnesium button
+            if (target.name.Contains("ButtonMagnesium"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Magnesium");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //potassium button
+            if (target.name.Contains("ButtonPotassium"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Potassium");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //argon button
+            if (target.name.Contains("ButtonArgon"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Argon");
+                toolTip.costPanel.SetActive(false);
+                toolTip.setStatus(true);
+            }
+
+            //methane button
+            if (target.name.Contains("ButtonMethane"))
+            {
+                //start the button tooltip, including the cost panel
+                StartCoroutine("DisplayToolTip");
+                toolTip.SendMessage("setMessage", "Methane");
+                toolTip.costPanel.SetActive(false);
                 toolTip.setStatus(true);
             }
 
@@ -2538,10 +2694,14 @@ public class Main : MonoBehaviour
     {
         //this method updates the text in the resources panel
 
+        resourcePanel.updatePanel();
+
+        /*
         ironText.text = "Iron: " + playerResources[0];
         sulfurText.text = "Sulfur: " + playerResources[1];
         moneyText.text = "Money: " + playerResources[2];
         hydrogenText.text = "Hydrogen: " + playerResources[3];
+        */
     }
 
     public void SetGoalText()
