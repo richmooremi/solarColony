@@ -18,8 +18,10 @@ public class Craft : MonoBehaviour {
 
     //variables for moving into position
     public GameObject target;
-    protected float speed = .1f;
+    public float speed = .1f;
+    public float useSpeed = 1f;
     public bool reachedTarget = false;
+    public int currentTechLevel =0;
 
     //set true from the Income(), Mine(), and Syphon() methods in various subclasses
     protected bool startedCollecting = false;
@@ -30,6 +32,7 @@ public class Craft : MonoBehaviour {
 
     //reference to the planet panel
     protected PlanetPanel planetpanel;
+    protected Main main;
 
     //determines whether the craft is currently in use
     protected bool inUse = true;
@@ -41,11 +44,18 @@ public class Craft : MonoBehaviour {
         targetPlanet = Main.getCurrentPlanet();
 
         planetpanel = GameObject.FindObjectOfType<PlanetPanel>();
+        main = GameObject.FindObjectOfType<Main>();
+
+        //set tech level to control how fast this craft mines
+        currentTechLevel = main.getTechLevel();
+        speed *= main.getTechLevel() * 1.5f;
+        useSpeed *= main.getTechLevel() * 1.5f;
 
         //craft are in use by default
         inUse = true;
 
     }
+
 
     public void setDistance(int dist)
     {
@@ -112,6 +122,8 @@ public class Craft : MonoBehaviour {
 
                 //destroy the target gameObject to prevent buildup of unneeded objects
                 Destroy(target);
+
+                
             }
         }
     }

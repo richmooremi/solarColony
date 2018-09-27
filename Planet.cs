@@ -144,11 +144,11 @@ public class Planet : MonoBehaviour {
         {
             availableActions.Remove("Explore");
 
-            if (canMine)
+            if (canMine || canSyphon)
                 availableActions.Add("Mine");
 
-            if (canSyphon)
-                availableActions.Add("Syphon");
+            //if (canSyphon)
+            //   availableActions.Add("Syphon");
 
             availableActions.Add("Build");
         }

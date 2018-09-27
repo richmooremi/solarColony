@@ -19,7 +19,7 @@ public class Miner : Craft {
 
     //statistics of the miner craft
     private int capacity = 5;                       //carrying capacity of the craft
-    private float miningSpeed = .25f;               //mining speed variable, expressed in seconds
+    //private float miningSpeed = .25f;               //mining speed variable, expressed in seconds
 
     void Start ()
     {
@@ -41,7 +41,7 @@ public class Miner : Craft {
         if (!startedCollecting && reachedTarget)
         {
             startedCollecting = true;
-            StartCoroutine(Mine(miningSpeed));
+            StartCoroutine(Mine(useSpeed));
         }
     }
     
@@ -76,6 +76,8 @@ public class Miner : Craft {
             if (this.resources[targetResource] - this.capacity == 0)
             {
                 this.resources[targetResource] = 0;
+                Debug.Log("Calling Player resources index " + targetResource);
+                Debug.Log("Player resources length: " + Main.playerResources.Length);
                 Main.playerResources[targetResource] += this.capacity;
                 planetpanel.updateResources();
             }

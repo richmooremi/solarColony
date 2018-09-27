@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class Marketplace : MonoBehaviour
 {
-    float[] basePrices = new float[4];
+    float[] basePrices = { 50, 100, 0, 150, 200, 125, 150, 200, 350, 120, 135, 160, 125, 200 ,125, 400};
 
     Main main;
 
     bool extended = false;              //true when the panel is on the screen
-    public Button panelButton;          //button object used to collapse and expand the planet panel
+    //public Button panelButton;          //button object used to collapse and expand the planet panel
     public Dropdown dropdown;
     public Text buyText, sellText;
     public float priceScalar = .0125f;
@@ -22,10 +22,6 @@ public class Marketplace : MonoBehaviour
     void Start ()
     {
         main = GameObject.FindObjectOfType<Main>();
-
-        basePrices[0] = 50;
-        basePrices[1] = 100;
-        basePrices[3] = 150;
 
         setPrices();
     }
@@ -71,7 +67,7 @@ public class Marketplace : MonoBehaviour
         //if the panel is collapsed, move into the expanded position
         if (!extended)
         {
-            panelButton.transform.localEulerAngles = new Vector3(0, 0, 180);
+            //panelButton.transform.localEulerAngles = new Vector3(0, 0, 180);
             this.GetComponent<RectTransform>().anchoredPosition = new Vector2(-104.1f, 107.7f);
             extended = true;
         }
@@ -79,7 +75,7 @@ public class Marketplace : MonoBehaviour
         //if the panel is expanded, move back into the collapsed position
         else
         {
-            panelButton.transform.localEulerAngles = new Vector3(0, 0, 0);
+            //panelButton.transform.localEulerAngles = new Vector3(0, 0, 0);
             this.GetComponent<RectTransform>().anchoredPosition = new Vector2(-104.1f, 131f);
             extended = false;
         }

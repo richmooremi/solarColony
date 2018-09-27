@@ -12,12 +12,12 @@ using System.Collections;
 public class Syphoner : Craft {
 
     //resources contained by the craft used with Main.resourceNames[]  
-    public int[] resources = new int[4];
+    public int[] resources = new int[16];
     public int targetResource = 3;
 
     //statistics of the miner craft
     private int capacity = 5;                       //carrying capacity of the craft
-    private float syphonSpeed = .25f;               //syphoning speed variable, expressed in 
+    //private float syphonSpeed = .25f;               //syphoning speed variable, expressed in 
 
     void Start()
     {
@@ -40,13 +40,15 @@ public class Syphoner : Craft {
         if (!startedCollecting && reachedTarget)
         {
             startedCollecting = true;
-            StartCoroutine(Syphon(syphonSpeed));
+            StartCoroutine(Syphon(useSpeed));
         }
 
     }
 
     IEnumerator Syphon(float waitTime)
     {
+        waitTime = 1.0f / waitTime;
+
         if (targetPlanet.resources[targetResource] == 0)
         {
             this.resources[targetResource] = 0;

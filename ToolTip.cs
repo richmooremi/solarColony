@@ -106,7 +106,7 @@ public class ToolTip : MonoBehaviour {
         //this method is called in Start() and sets all of the possible
         //tooltip name and text combinations
 
-        messages.Add("Mining\nRobot",               "Launch a mining robot to collect iron from, this planet which can be used as a manufacturing material.");
+        messages.Add("Mining\nRobot",               "Launch a robotic mining craft to collect resources from this planet. Click for further options.");
         messages.Add("Exploration\nSatellite",      "Launch a satellite to collect data about this planet. The first step to gathering resouces.");
         messages.Add("Building\nOptions",           "Launch a commercial structure to orbit this planet and generate revenue. Click for further options.");
         messages.Add("Syphoning\nRobot",            "Launch a robot to syphon hydrogen from this planet's atmosphere, which can be used as fuel.");             //on any non venus planet, no space

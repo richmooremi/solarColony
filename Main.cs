@@ -74,9 +74,11 @@ public class Main : MonoBehaviour
     public GameObject buttonCasino;
     public GameObject buttonStudio;
     public GameObject buttonFactory;
-    public GameObject buttonHydrogen;
-    public GameObject buttonSulfur;
-    public GameObject buttonIron;
+    public GameObject buttonIron, buttonSulfur, buttonHydrogen, buttonOxygen,
+        buttonSodium, buttonHelium, buttonCarbon, buttonWater, buttonNitrogen,
+        buttonSilicon, buttonAluminum, buttonMagnesium, buttonPotassium, buttonArgon,
+        buttonMethane;
+
 
     int targetResource;
 
@@ -131,7 +133,7 @@ public class Main : MonoBehaviour
     public GameObject planetDetails;
 
     //variables related to probe tech level
-    private int techLevel = 0;
+    private int techLevel = 1;
 
     //public Vector2 minerTempRange = new Vector2(-5, -1);
 
@@ -660,7 +662,6 @@ public class Main : MonoBehaviour
         //this method is called when the build button is clicked and creates
         //a circular menu originating from the center of the button
 
-        Debug.Log("Drawing submenu with button " + btn);
 
         //close the submenu and return if it is already open
         if (subMenuOpen)
@@ -742,7 +743,7 @@ public class Main : MonoBehaviour
             subMenuItem = GameObject.Instantiate(subMenuItemInstance, newPos, Quaternion.identity) as GameObject;
             subMenuItem.transform.position = newPos;
             subMenuItem.transform.SetParent(Camera.main.transform);
-            subMenuItem.transform.localScale = currentPlanet.transform.localScale * .75f;
+            subMenuItem.transform.localScale = currentPlanet.transform.localScale * .5f;
         }
     }
 
@@ -775,6 +776,31 @@ public class Main : MonoBehaviour
                 return buttonIron;
             case "sulfur":
                 return buttonSulfur;
+            case "oxygen":
+                return buttonOxygen;
+            case "sodium":
+                return buttonSodium;
+            case "helium":
+                return buttonHelium;
+            case "carbon dioxide":
+                return buttonCarbon;
+            case "water":
+                return buttonWater;
+            case "nitrogen":
+                return buttonNitrogen;
+            case "silicon":
+                return buttonSilicon;
+            case "aluminum":
+                return buttonAluminum;
+            case "magnesium":
+                return buttonMagnesium;
+            case "potassium":
+                return buttonPotassium;
+            case "argon":
+                return buttonArgon;
+            case "methane":
+                return buttonMethane;
+
         }
 
         return null;
@@ -1439,7 +1465,7 @@ public class Main : MonoBehaviour
                 }
             }
 
-            //if iron button is clicked
+            //if sulfur button is clicked
             if (target.name.Contains("ButtonSulfur"))
             {
                 if (readyToMine())
@@ -1476,12 +1502,456 @@ public class Main : MonoBehaviour
                 }
             }
 
-            //if iron button is clicked
+            //if hydrogen button is clicked
             if (target.name.Contains("ButtonHydrogen"))
             {
                 if (readyToMine())
                 {
                     targetResource = 3;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
+                }
+            }
+
+            //if oxygen button is clicked
+            if (target.name.Contains("ButtonOxygen"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 4;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
+                }
+            }
+
+            //if sodium button is clicked
+            if (target.name.Contains("ButtonSodium"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 5;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "mine";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "mine";
+                    return;
+                }
+            }
+
+            //if helium button is clicked
+            if (target.name.Contains("ButtonHelium"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 6;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
+                }
+            }
+
+             //if carbon dioxide button is clicked
+            if (target.name.Contains("ButtonCarbon"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 7;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
+                }
+            }
+
+            //if water button is clicked
+            if (target.name.Contains("ButtonWater"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 4;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "mine";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "mine";
+                    return;
+                }
+            }
+
+            //if nitrogen button is clicked
+            if (target.name.Contains("ButtonNitrogen"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 9;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
+                }
+            }
+
+            //if silicon button is clicked
+            if (target.name.Contains("ButtonSilicon"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 10;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "mine";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "mine";
+                    return;
+                }
+            }
+
+            //if aluminum button is clicked
+            if (target.name.Contains("ButtonAluminum"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 11;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "mine";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "mine";
+                    return;
+                }
+            }
+
+            //if magnesium button is clicked
+            if (target.name.Contains("ButtonMagnesium"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 12;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "mine";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "mine";
+                    return;
+                }
+            }
+
+            //if potassium button is clicked
+            if (target.name.Contains("ButtonPotassium"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 13;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "mine";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "mine";
+                    return;
+                }
+            }
+
+            //if argon button is clicked
+            if (target.name.Contains("ButtonArgon"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 14;
+
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        clickMode = "normal";
+                    }
+
+                    //change click mode if already in build mode
+                    else if (GameObject.Find("OrbitSphere"))
+                    {
+                        clickMode = "syphon";
+                    }
+
+                    //create orbit sphere if there wasn't
+                    else
+                    {
+                        GameObject sphere = Instantiate(orbitSpherePrefab, getCurrentPlanet().transform.position, Quaternion.identity) as GameObject;
+                        sphere.GetComponent<SphereCollider>().enabled = false;
+                        float scale = getCurrentPlanet().transform.localScale.x * 1.01f;
+                        sphere.transform.localScale = new Vector3(scale, scale, scale);
+                        sphere.transform.SetParent(getCurrentPlanet().transform);
+                        sphere.name = "OrbitSphere";
+                    }
+
+                    //change click mode
+                    clickMode = "syphon";
+                    return;
+                }
+            }
+
+             //if methane button is clicked
+            if (target.name.Contains("ButtonMethane"))
+            {
+                if (readyToMine())
+                {
+                    targetResource = 15;
 
                     //remove orbit sphere is there was one
                     if (GameObject.Find("OrbitSphere") && (clickMode == "casino" || clickMode == "factory" || clickMode == "studio"))
@@ -1863,12 +2333,14 @@ public class Main : MonoBehaviour
             return false;
         }
 
+        /*
         //false if there are already too many miners on the planet
         if (getCurrentPlanet().currentMiners >= (getCurrentPlanet().maxMiners * 100))
         {
             StartCoroutine(displayMiniMessage("This planet can't support any more mining rigs."));
             return false;
         }
+        */
 
         //false if the player doesn't have enough money
         if (playerResources[2] < minerMoney)
@@ -2010,23 +2482,23 @@ public class Main : MonoBehaviour
         switch (difficulty)
         {
             case 0:
-                playerResources = new int[] { 750, 0, 750, 750 };
+                playerResources = new int[] { 750, 0, 750, 750, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 break;
 
             case 1:
-                playerResources = new int[] { 500, 0, 500, 500 };
+                playerResources = new int[] { 500, 0, 500, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 break;
 
             case 2:
-                playerResources = new int[] { 250, 0, 250, 250 };
+                playerResources = new int[] { 250, 0, 250, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 break;
 
             case 3:
-                playerResources = new int[] { 100, 0, 150, 100 };
+                playerResources = new int[] { 100, 0, 150, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 break;
 
             case 4:
-                playerResources = new int[] { 50, 0, 100, 75 };
+                playerResources = new int[] { 50, 0, 100, 75, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 break;
         }
 
