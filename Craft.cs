@@ -37,6 +37,8 @@ public class Craft : MonoBehaviour {
     //determines whether the craft is currently in use
     protected bool inUse = true;
 
+    public AudioClip clip;
+
     protected void Start ()
     {
 
@@ -86,7 +88,12 @@ public class Craft : MonoBehaviour {
 
             //if the craft is at it's target destination, set the reached target flag
             if (transform.position == target.transform.position)
+            {
                 reachedTarget = true;
+                this.GetComponent<AudioSource>().clip = clip;
+                this.GetComponent<AudioSource>().volume = 1;
+                this.GetComponent<AudioSource>().Play();
+            }
 
             //if the target hasn't been reached yet, keep moving toward the target
             if (!reachedTarget)

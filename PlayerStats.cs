@@ -9,6 +9,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour {
 
@@ -22,6 +23,9 @@ public class PlayerStats : MonoBehaviour {
     public bool firstPlay = true;                                                       //true before the player finishes their first game
     public Dictionary<string, bool> achievements = new Dictionary<string, bool>();      //key: achivement name / value: true when the player has completed
     public List<int> completedDifficulties;                                             //the difficulties the player has completed the game at
+
+    //used to toggle between mouse and touch control
+    public bool useTouchInput = false;
 
     //a reference to this class, used to make this a singleton
     public static PlayerStats stats;
@@ -42,6 +46,12 @@ public class PlayerStats : MonoBehaviour {
         //if the stats manager already exists, destroy this object
         else if (stats != this)
             Destroy(gameObject);
+    }
+
+    public void setTouchControl()
+    {
+        useTouchInput = FindObjectOfType<Toggle>().isOn;
+        Debug.Log(useTouchInput);
     }
 
 

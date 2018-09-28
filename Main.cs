@@ -67,6 +67,7 @@ public class Main : MonoBehaviour
     static GameObject subMenuItem;
     static private bool menuOpen;               //true when the planet menu is open
     static private bool subMenuOpen;            //true when the build submenu is open
+    static private string nameOfSumMenu;        //contains the name of the submenu open
     public GameObject buttonBuild;
     public GameObject buttonMine;
     public GameObject buttonSyphon;
@@ -82,6 +83,7 @@ public class Main : MonoBehaviour
 
     int targetResource;
     public ResourcePanel resourcePanel;
+    private Touch touch;
 
 
     private string clickMode = "normal";        //normal, explore, mine, syphon, casino, factory, studio
@@ -507,21 +509,71 @@ public class Main : MonoBehaviour
         //if on the map screen, move the camera accordingly
         if (currentPlanetIndex == 0)
         {
-            if (Input.GetKey(KeyCode.A))
+
+            if (!stats.useTouchInput)
+            {
+            if (Input.GetKey(KeyCode.A) && mapCamera.transform.position.x > -20)
                 mapCamera.transform.position = new Vector3(mapCamera.transform.position.x - .1f, mapCamera.transform.position.y, mapCamera.transform.position.z);
 
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.D) && mapCamera.transform.position.x < 38)
                 mapCamera.transform.position = new Vector3(mapCamera.transform.position.x + .1f, mapCamera.transform.position.y, mapCamera.transform.position.z);
 
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W) && mapCamera.transform.position.y < 23)
                 mapCamera.transform.position = new Vector3(mapCamera.transform.position.x, mapCamera.transform.position.y, mapCamera.transform.position.z + .1f);
 
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S) && mapCamera.transform.position.x > -40)
                 mapCamera.transform.position = new Vector3(mapCamera.transform.position.x, mapCamera.transform.position.y, mapCamera.transform.position.z - .1f);
 
             if (Input.GetAxis("Mouse ScrollWheel") != 0 && currentPlanetIndex == 0)
+                    if ((Input.GetAxis("Mouse ScrollWheel") < 0 && mapCamera.transform.position.y < 42) || (Input.GetAxis("Mouse ScrollWheel") > 0 && mapCamera.transform.position.y > 3))
+                        mapCamera.transform.position = new Vector3(mapCamera.transform.position.x, mapCamera.transform.position.y - (Input.GetAxis("Mouse ScrollWheel") * 10), mapCamera.transform.position.z + (Input.GetAxis("Mouse ScrollWheel") * 10));
+            }
+
+
+
+            else
             {
-                mapCamera.transform.position = new Vector3(mapCamera.transform.position.x, mapCamera.transform.position.y - (Input.GetAxis("Mouse ScrollWheel") * 10), mapCamera.transform.position.z + (Input.GetAxis("Mouse ScrollWheel") * 10));
+                touch = Input.touches[0];
+
+                //touch scrolling
+                if (touch.phase == TouchPhase.Moved && Input.touchCount == 1)
+                {
+                    if (((touch.deltaPosition.x > 0 && mapCamera.transform.position.x > -20) || (touch.deltaPosition.x < 0 && mapCamera.transform.position.x < 38)) && ((touch.deltaPosition.y > 0 && mapCamera.transform.position.z > -40) || (touch.deltaPosition.y < 0 && mapCamera.transform.position.z < 23)))
+                    { 
+                        Vector3 newPos =  new Vector3(mapCamera.transform.position.x - touch.deltaPosition.x, mapCamera.transform.position.y, mapCamera.transform.position.z - touch.deltaPosition.y);
+                        mapCamera.transform.position = Vector3.Lerp(mapCamera.transform.position, newPos, 0.5f);
+                    }
+                }
+
+                //pinch zooming
+                if (Input.touchCount == 2)
+                {
+                    // Store both touches.
+                    Touch touchZero = Input.GetTouch(0);
+                    Touch touchOne = Input.GetTouch(1);
+
+                    // Find the position in the previous frame of each touch.
+                    Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+                    Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+                    // Find the magnitude of the vector (the distance) between the touches in each frame.
+                    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+                    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+                    // Find the difference in the distances between each frame.
+                    float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+                    // ... change the canvas size based on the change in distance between the touches.
+                    //canvas.scaleFactor -= deltaMagnitudeDiff * zoomSpeed;
+                    if ((deltaMagnitudeDiff > 0 && mapCamera.transform.position.y < 42) || (deltaMagnitudeDiff < 0 && mapCamera.transform.position.y > 3))
+                    {
+                        Vector3 newPos = new Vector3(mapCamera.transform.position.x, mapCamera.transform.position.y + (deltaMagnitudeDiff), mapCamera.transform.position.z);
+                        mapCamera.transform.position = Vector3.Lerp(mapCamera.transform.position, newPos, 0.5f);
+                    }
+
+                    // Make sure the canvas size never drops below 0.1
+                    //canvas.scaleFactor = Mathf.Max(canvas.scaleFactor, 0.1f);
+                }
             }
         }
 
@@ -671,6 +723,12 @@ public class Main : MonoBehaviour
         {
             EraseSubMenu();
             subMenuOpen = false;
+            //return;
+        }
+
+        if (nameOfSumMenu == btn)
+        {
+            nameOfSumMenu = null;
             return;
         }
 
@@ -686,6 +744,8 @@ public class Main : MonoBehaviour
 
         //assign buttons to submenu items
         string[] availableSubItems = null;
+
+        nameOfSumMenu = btn;
 
         if (btn == "build")
         {
@@ -846,11 +906,18 @@ public class Main : MonoBehaviour
 
     private void GetMouseInput()
     {
+        //toggles the use of touch input for clicking on game objects
+        if (stats.useTouchInput)
+        {
+            touch = Input.GetTouch(0);
+            ray = Camera.main.ScreenPointToRay(touch.position);
+        }
+        else
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+
         //this method creates a ray from the camera to the object behind the mouse,
         //then performs a function based on hover and click conditions
-
-        //create ray from current camera to mouse position
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         //if the raycast doesn't hit anything
         if (!Physics.Raycast(ray, out hit, rayCastLength))
@@ -1335,8 +1402,21 @@ public class Main : MonoBehaviour
             //if mine button is clicked
             if (target.name.Contains("ButtonMine"))
             {
-                //erase build menu
-                EraseSubMenu();
+                {
+
+                    
+                    //remove orbit sphere is there was one
+                    if (GameObject.Find("OrbitSphere"))
+                    {
+                        Destroy(GameObject.Find("OrbitSphere"));
+                        Debug.Log("ORBIT SPHERE");
+                        clickMode = "normal";
+                    }
+
+                    //draw the submenu
+                    DrawSubMenu(target.transform, "mine");
+                    return;
+                }
 
                 //used in tutorial
                 if (advisorPanel.inTutorial)
@@ -1349,7 +1429,9 @@ public class Main : MonoBehaviour
                     }
                 }
 
-                
+
+
+                clickMode = "normal";
                 DrawSubMenu(target.transform, "mine");
                 return;
 
@@ -2221,7 +2303,7 @@ public class Main : MonoBehaviour
             RotateCamera();
 
         //if wasd input or scroll wheel, call MapCamera()
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetAxis("Mouse ScrollWheel") != 0f)
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetAxis("Mouse ScrollWheel") != 0f || Input.touchCount > 0)
             MapCamera();
     }
 
@@ -2695,7 +2777,6 @@ public class Main : MonoBehaviour
         //this method updates the text in the resources panel
 
         resourcePanel.updatePanel();
-
         /*
         ironText.text = "Iron: " + playerResources[0];
         sulfurText.text = "Sulfur: " + playerResources[1];
